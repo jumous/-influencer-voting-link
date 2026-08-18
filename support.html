@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IVL • Supporter Purchase</title>
+<style>
+:root{--bg:#08080a;--card:#121218;--line:#2b2b33;--text:#fafafa;--muted:#aaaab4;--gold:#f2c744}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#292317,#08080a 42%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{width:min(720px,calc(100% - 32px));margin:auto}
+header{text-align:center;padding:65px 0 30px}
+.eyebrow{color:#ffe18a;font-size:11px;font-weight:900;letter-spacing:.15em}
+h1{font-size:clamp(40px,8vw,62px);line-height:1;margin:15px 0}
+p{color:var(--muted);line-height:1.7}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin:18px 0}
+.option{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px;border:1px solid var(--line);border-radius:13px;margin:10px 0;cursor:pointer;transition:.15s}
+.option.selected{background:var(--gold);color:#111;border-color:var(--gold)}
+.price{font-size:22px;font-weight:950}
+.detail{font-size:12px;color:var(--muted)}
+.selected .detail{color:#222}
+.select{border:1px solid #444;border-radius:10px;padding:10px 14px;font-weight:900}
+.selected .select{background:#111;color:#fff;border-color:#111}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;border:0;border-radius:12px;padding:15px;margin-top:14px;background:var(--gold);color:#111;font-weight:950;cursor:pointer}
+.secondary{background:#1a1a20;color:#fff;border:1px solid var(--line)}
+.notice{background:#171309;border:1px solid #5b4813;color:#f2dc92;border-radius:12px;padding:14px;line-height:1.6;font-size:13px}
+input{width:100%;padding:14px;border-radius:11px;border:1px solid var(--line);background:#0a0a0d;color:#fff;margin-top:8px}
+.saved{display:none;color:#63dc95;font-size:13px}
+footer{text-align:center;color:#777;font-size:12px;padding:30px 0}
+</style>
+</head>
+<body>
+<header class="wrap">
+<div class="eyebrow">IVL • INFLUENCER VOTING LINK</div>
+<h1>Support Tez</h1>
+<p>Choose an optional supporter package and continue to an external gift-card retailer.</p>
+</header>
+
+<main class="wrap">
+<section class="card">
+<h2>Select a package</h2>
+<div id="options"></div>
+</section>
+
+<section class="card">
+<h2>Purchase your gift card</h2>
+<p>Your gift-card purchase takes place on the external Startselect website.</p>
+<a class="btn" href="https://startselect.com/it-en/gift-cards/steam-card-gift-cards" target="_blank" rel="noopener noreferrer">
+BUY GIFT CARD ON STARTSELECT
+</a>
+<div class="notice" style="margin-top:18px">
+<strong>Important:</strong> This page does not request, collect, store, validate, or redeem Steam gift-card PINs or redemption codes. Never submit a gift-card PIN to this website.
+</div>
+</section>
+
+<section class="card">
+<h2>Purchase reference</h2>
+<p>For your own record, enter the order or receipt reference supplied by the retailer. Do not enter a gift-card PIN or redemption code.</p>
+<input id="reference" placeholder="Order / receipt reference">
+<button class="btn" onclick="saveReference()">Save Reference</button>
+<div class="saved" id="saved">✓ Purchase reference saved on this device.</div>
+</section>
+
+<a class="btn secondary" href="https://jumous.github.io/-influencer-voting-link/">← Back to IVL Voting Site</a>
+
+<footer>IVL — Influencer Voting Link • Optional supporter purchase</footer>
+</main>
+
+<script>
+const packages=[[100,1],[200,2],[300,3],[400,4],[500,5],[600,6],[700,7],[800,8],[900,9],[1000,10]];
+const box=document.getElementById("options");
+
+packages.forEach(([amount,units])=>{
+ const el=document.createElement("div");
+ el.className="option";
+ el.innerHTML='<span><div class="price">$'+amount.toLocaleString()+'</div><div class="detail">'+units+' supporter unit'+(units>1?'s':'')+'</div></span><span class="select">Select</span>';
+ el.onclick=()=>{
+   document.querySelectorAll(".option").forEach(x=>{x.classList.remove("selected");x.querySelector(".select").textContent="Select"});
+   el.classList.add("selected");
+   el.querySelector(".select").textContent="Selected";
+ };
+ box.appendChild(el);
+});
+
+function saveReference(){
+ const input=document.getElementById("reference");
+ if(!input.value.trim()){alert("Please enter your order or receipt reference.");return}
+ localStorage.setItem("ivl_order_reference",input.value.trim());
+ document.getElementById("saved").style.display="block";
+}
+</script>
+</body>
+</html>
